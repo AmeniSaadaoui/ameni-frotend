@@ -1,0 +1,49 @@
+<h1>Tableau de bord</h1>
+<p>Nombre des employes par succursale</p>
+<div class="dashboard-container">
+  <table class="dashboard-table">
+    <thead>
+      <tr>
+        <th>Succursales</th>
+        <th>Nombre d'employés</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employe of employes">
+        <td>{{ employe.succursale }}</td>
+        <td>{{ employe.nombre }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Total des effectifs :</th>
+        <td>{{ calculerTotalEffectifs() }}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<p>Nombre des pointeuses par succursale</p>
+<div class="dashboard-container">
+  <table class="dashboard-table">
+    <thead>
+      <tr>
+        <th>Succursales</th>
+        <th>Nombre des pointeuses</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let succursale of succursales">
+            <td>{{ succursale.nom }}</td>
+            <td>{{ succursale.pointeuses }}</td>
+            
+          </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+      <td>Total</td>
+      <td>{{ getTotalPointeuses() }}</td>
+    </tr>
+  </tfoot>
+</table>
+

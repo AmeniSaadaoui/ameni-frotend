@@ -1,0 +1,232 @@
+<div class="container-fluid" >
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h1 class="page-title">LISTE DES EQUIPES</h1>
+        <div class="count-container">
+          <p>Nombre de équipes: {{ countEquipes() }}</p>
+        </div>
+        <div class="row my-4">
+          <!-- Small table -->
+          <div class="col-md-12">
+            <div class="card shadow">
+             
+              <div class="card-body">
+                <button class="btn btn-info float-right" data-toggle="modal" data-target="#myModal" (click)="reset()">Ajouter Equipe</button>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="input-group mb-3">
+                      <select class="form-control" [(ngModel)]="datafilter.name">
+                        <option value="NetAdvisor-Sfax">NetAdvisor-Sfax</option>
+                        <option value="NetAdvisor-Sousse">NetAdvisor-Sousse</option>
+                        <option value="NetAdvisor-Tunis">NetAdvisor-Tunis</option>
+                      </select>
+                      <div class="input-group-prepend">
+                        <button class="btn btn-info" (click)="filterAvance()">Recherche</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+        <table class="table datatables" id="dataTable-1">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nom</th>
+              <th>Succursale</th>
+              <th>Superviseur</th>
+              <th>Planning</th>
+
+             
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr *ngFor="let l of listAll; let i = index">
+              <td>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input">
+                  <label class="custom-control-label"></label>
+                </div>
+              </td>
+              <td>{{ l.nom }}</td>
+              <td>{{ l.succursales.nom}}</td>
+              <td>{{ l.superviseurs.prenom }}</td>
+              <td>{{ l.plannings.heure_debut}} à {{ l.plannings.heure_fin}} </td>
+           
+              <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="text-muted sr-only">Action</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                
+                  <button class="dropdown-item"  data-toggle="modal" data-target="#myModal2" (click)="setItem(l)">Modifier</button>
+                  <button class="dropdown-item" data-toggle="modal" data-target="#myModal3" (click)="deleteItem(l.id)">Supprimer</button>
+             
+                </div>
+              </td>
+            </tr>
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+  
+  
+  <!------ modal ajout-->
+  
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Ajouter une équipe</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12 er">
+              
+            </div>
+            <div class="col-lg-6">
+              <label>Nom</label>
+              <input type="text" placeholder="Nom" class="form-control nom"  required
+              [(ngModel)]="dataSend.nom"
+              name="nom">
+            </div>
+            <div class="col-lg-6">
+                <label>Succursale</label>
+              <select class="form-control"  [(ngModel)]="dataSend.succursale">
+                <option value="0" selected>Choisir une succursale</option>
+                <option *ngFor="let l of listeSuccursale; let i = index" [ngValue]="l">{{l.nom}}</option>
+              </select>
+            </div>
+            <div class="col-lg-6">
+                <label>Superviseur</label>
+              <select class="form-control"  [(ngModel)]="dataSend.superviseur">
+                <option value="0" selected>Choisir un superviseur</option>
+                <option *ngFor="let l of listeSuperviseur; let i = index" [ngValue]="l">{{l.nom}}</option>
+              </select>
+            </div>
+            
+    
+            <div class="col-lg-6">
+              <label>Planning</label>
+            <select class="form-control"  [(ngModel)]="dataSend.planning">
+              <option value="0" selected>Choisir un planning</option>
+              <option *ngFor="let l of listePlanning; let i = index" [ngValue]="l">{{l.description}}</option>
+            </select>
+            </div>
+            <div class="col-lg-6">
+                <label>Date de création</label>
+                <input type="date" placeholder="date_creation" class="form-control date_creation"  required
+                [(ngModel)]="dataSend.date_creation"
+                name="date_creation">
+            </div>
+           
+           
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveData()">Enregistrer</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!---------- model update-->
+  
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Modifier</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12 er">
+              
+            </div>
+            
+            <div class="col-lg-6">
+                <label>Nom</label>
+                <input type="text" placeholder="Nom" class="form-control nom"  required
+                [(ngModel)]="dataUpdate.nom"
+                name="nom">
+              </div>
+              <div class="col-lg-6">
+                  <label>Succursale</label>
+                <select class="form-control"  [(ngModel)]="dataSend.succursale">
+                  <option value="0" selected>Choisir une succursale</option>
+                  <option *ngFor="let l of listeSuccursale; let i = index" [ngValue]="l">{{l.nom}}</option>
+                </select>
+                </div>
+             
+             
+        
+              <div class="col-lg-6">
+                <label>Superviseur</label>
+              <select class="form-control"  [(ngModel)]="dataSend.superviseur">
+                <option value="0" selected>Choisir un Superviseur</option>
+                <option *ngFor="let l of listeSuperviseur; let i = index" [ngValue]="l">{{l.nom}}</option>
+              </select>
+              </div>
+              
+      
+              <div class="col-lg-6">
+                <label>Planning</label>
+              <select class="form-control"  [(ngModel)]="dataSend.planning">
+                <option value="0" selected>Choisir un planning</option>
+                <option *ngFor="let l of listePlanning; let i = index" [ngValue]="l">{{l.description}}</option>
+              </select>
+              </div>
+             
+           
+           
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveUpdate(idItem,dataUpdate.date_creation)">Enregistrer</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Supprimer</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+             <h2> Voulez-vous supprimer Equipe 5 {{name}} ?</h2>
+             <br>
+            </div>
+           
+         
+          </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveDelete(idItem)" data-dismiss="modal">Enregistrer</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Quitter</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

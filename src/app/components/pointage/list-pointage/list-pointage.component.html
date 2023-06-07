@@ -1,0 +1,69 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <h1 class="page-title">LISTE DE POINTAGE</h1>
+      <div class="count-container">
+        <p>Nombre de pointages: {{ countPointages() }}</p>
+      </div>
+      
+      <div class="row my-4">
+        <!-- Small table -->
+        <div class="col-md-12">
+          <div class="card shadow">
+            <div class="card-body">
+              <button class="btn btn-primary float-right" >Télécharger</button>
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="input-group mb-3">
+                    <select class="form-control" [(ngModel)]="datafilter.name">
+                      <option value="NetAdvisor-Sfax">NetAdvisor-Sfax</option>
+                      <option value="NetAdvisor-Sousse">NetAdvisor-Sousse</option>
+                      <option value="NetAdvisor-Tunis">NetAdvisor-Tunis</option>
+                    </select>
+                    <div class="input-group-prepend">
+                      <button class="btn btn-info" (click)="filterAvance()">Recherche</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                
+              <table class="table datatables" id="dataTable-1">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Nom & Prenom</th>
+                    <th>Date</th>
+                    <th>Heure Prévue</th>
+                    <th>Heure de Pointe</th>
+                    <th>Pointeuse</th>
+                    <th>Succursale</th>
+                    <th>Retard</th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let l of listAll; let i = index">
+                    <td>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label"></label>
+                      </div>
+                    </td>
+                    <td>{{ l.employes.nom }}<br>{{ l.employes.prenom }}</td>
+                    <td>{{ l.date }}</td>
+                    <td>{{ l.heureprevue.heureprevue }}</td>
+                    <td>{{ l.pointage }}</td>
+                    <td>{{ l.pointeuses.nom }}</td>
+                    <td>{{ l.succursales.nom }}</td>
+                    <td [ngClass]="getRetardClass(l.retard)">{{ l.retard }}</td>
+                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- .col-12 -->
+  </div> <!-- .row -->
+</div> <!-- .container-fluid -->

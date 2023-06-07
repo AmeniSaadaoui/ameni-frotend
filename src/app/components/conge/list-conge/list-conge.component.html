@@ -1,0 +1,302 @@
+<div class="container-fluid" >
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h1 class="page-title">LISTE DES CONGES</h1>
+        
+  
+        <div class="row my-4">
+          <!-- Small table -->
+          <div class="col-md-12">
+            <div class="card shadow">
+             
+              <div class="card-body">
+                <button class="btn btn-info float-right" data-toggle="modal" data-target="#myModal" (click)="reset()">Ajouter congé</button>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="input-group mb-3">
+             
+              <select class="form-control" [(ngModel)]="datafilter.name">
+                <option value="Malade">Malade</option>
+                <option value="Congé Annuelle">Congé Annuelle</option>
+              </select>
+              <div class="input-group-prepend">
+                <button class="btn btn-info" (click)="filterAvance()">Recherche</button>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+          <table class="table datatables" id="dataTable-1">
+          <thead>
+            <tr>
+              <th></th>
+              
+              <th>Nom & Prenom</th>
+              <th>Motif</th>
+              <th>Date début</th>
+              <th>Date fin</th>
+              <th>Date retour</th>
+
+             
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr *ngFor="let l of listAll; let i = index">
+              <td>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input">
+                  <label class="custom-control-label"></label>
+                </div>
+              </td>
+              
+              <td>{{ l.employes.nom }}<br>{{ l.employes.prenom }}</td>
+              <td>{{l.motif}}</td>
+              <td>{{ l.date_debut }}</td>
+              <td>{{ l.date_fin }}</td>
+              <td>{{ l.date_retour }} </td>
+           
+              <td><button class="btn btn-sm dropdown-toggle more-horizontal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="text-muted sr-only">Action</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <button class="dropdown-item" data-toggle="modal" data-target="#myModal4" (click)="showItem(l.id)">Afficher</button>
+                  <button class="dropdown-item"  data-toggle="modal" data-target="#myModal2" (click)="setItem(l)">Modifier</button>
+                  <button class="dropdown-item" data-toggle="modal" data-target="#myModal3" (click)="deleteItem(l)">Supprimer</button>
+             
+                </div>
+              </td>
+            </tr>
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div> <!-- .col-12 -->
+    </div> <!-- .row -->
+  </div> <!-- .container-fluid -->
+  
+  
+  <!------ modal ajout-->
+  
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Ajouter</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12 er">
+              
+            </div>
+            <div class="col-lg-6">
+                <label>Nom & Prenom</label>
+              <select class="form-control"  [(ngModel)]="dataSend.employe">
+                <option value="0" selected>Choisir un employe</option>
+                <option *ngFor="let l of listeEmploye; let i = index" [ngValue]="l">{{l.nom}}{{l.prenom}}</option>
+              </select>
+              </div>
+            <div class="col-lg-6">
+              <label>Motif</label>
+              <input type="text" placeholder="Motif" class="form-control motif"  required
+              [(ngModel)]="dataSend.motif"
+              name="motif">
+            </div>
+            <div class="col-lg-6">
+              <label>Date début</label>
+              <input type="date" placeholder="Date debut" class="form-control date_debut"  required
+              [(ngModel)]="dataSend.date_debut"
+              name="date_debut">
+            </div>
+            <div class="col-lg-6">
+              <label>Date Fin</label>
+              <input type="date" placeholder="date_fin" class="form-control date_fin"  
+              [(ngModel)]="dataSend.date_fin"
+              name="date_fin">
+            </div>
+            <div class="col-lg-6">
+                <label>Date retour</label>
+                <input type="date" placeholder="date_retour" class="form-control date_retour"  
+                [(ngModel)]="dataSend.date_retour"
+                name="date_retour">
+              </div>
+            
+           
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveData()">Sauvgarder</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- Modal afficher -->
+  <div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Accord de congé</h4>
+        
+       
+  </div>
+        <div class="modal-body">
+          <div class="header">
+            <img src="C:\Users\win10\Pictures" alt="Logo de l'entreprise" class="logo">
+            <div class="company-info">
+              <p>[Adresse de l'entreprise]</p>
+              <p>Téléphone : [Téléphone de l'entreprise]</p>
+              <p>Email : [Email de l'entreprise]</p>
+              <p>Date : [Date]</p>
+            
+            
+  </div>
+          </div>
+  
+          <div class="content">
+            <p>Cher(e) [Nom et Prénom du salarié],</p>
+  
+            
+  
+  <p>Objet : Accord de congé</p>
+  
+            <p>Nous avons bien reçu votre demande de congé pour la période allant du [Date de début] au [Date de retour]. Après avoir examiné votre demande, nous avons le plaisir de vous informer que votre congé a été accordé.</p>
+  
+            <p>Voici les détails de votre congé :</p>
+  
+            <ul>
+              
+              
+  <li>Nom : [Votre Nom]</li>
+              <li>Prénom : [Votre Prénom]</li>
+              <li>Date de début du congé : [Date de début]</li>
+              <li>Date de retour : [Date de retour]</li>
+              <li>Solde de congé disponible : [Solde de congé disponible]</li>
+            </ul>
+  
+            <p>Nous reconnaissons l'importance de prendre du temps pour se reposer et se ressourcer, afin de maintenir un équilibre entre vie professionnelle et personnelle. Nous prouverons que ce congé vous permettra de vous détendre, de profiter de moments précieux en famille et de revenir au travail avec une énergie renouvelée.</p>
+  
+            <p>Nous vous encourageons à bien vous préparer avant votre départ en transmettant toutes les informations nécessaires à vos collègues et en veillant à ce que toutes les tâches en cours soient gérées de manière appropriée. Nous vous prions également à vous assurer que vos projets et responsabilités sont pris en charge par un membre de votre équipe pendant votre absence.</p>
+  
+            <p>En cas de besoin urgent ou de toute autre question, n'hésitez pas à contacter le département des Ressources Humaines. Nous serons ravis de vous assister.</p>
+  
+            
+  
+           
+  <p>Nous vous remercions pour votre contribution à l'entreprise et nous sommes convaincus que vous reviendrez reposé(e) et prêt(e) à continuer votre excellent travail.</p>
+  
+            
+  
+           
+  
+  
+  <p>Nous vous souhaitons un congé agréable !</p>
+  
+            <p>Cordialement,</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          
+         
+  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      
+      </div>
+  </div>
+    
+  </div>
+  <!---------- model update-->
+  
+  <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Modifier</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12 er">
+              
+            </div>
+            
+            <div class="col-lg-6">
+                <label>Nom & Prenom</label>
+              <select class="form-control"  [(ngModel)]="dataSend.employe">
+                <option value="0" selected>Choisir un sexe</option>
+                <option *ngFor="let l of listeEmploye; let i = index" [ngValue]="l">{{l.nom}}{{l.prenom}}</option>
+              </select>
+              </div>
+            <div class="col-lg-6">
+              <label>Motif</label>
+              <input type="text" placeholder="Motif" class="form-control motif"  required
+              [(ngModel)]="dataUpdate.motif"
+              name="motif">
+            </div>
+            <div class="col-lg-6">
+              <label>Date début</label>
+              <input type="date" placeholder="Date debut" class="form-control date_debut"  required
+              [(ngModel)]="dataUpdate.date_debut"
+              name="date_debut">
+            </div>
+            <div class="col-lg-6">
+              <label>Date Fin</label>
+              <input type="date" placeholder="date_fin" class="form-control date_fin"  
+              [(ngModel)]="dataUpdate.date_fin"
+              name="date_fin">
+            </div>
+            <div class="col-lg-6">
+                <label>Date retour</label>
+                <input type="date" placeholder="date_retour" class="form-control date_retour"  
+                [(ngModel)]="dataUpdate.date_retour"
+                name="date_retour">
+              </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveUpdate(idItem)">Sauvgarder</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Supprimer</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+             <h2> Voulez-vous supprimer un Congé {{name}} ?</h2>
+             <br>
+            </div>
+           
+         
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="saveDelete(idItem)" data-dismiss="modal">Sauvgarder</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
